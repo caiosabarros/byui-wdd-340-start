@@ -79,7 +79,6 @@ a {
 
 .grid {
   display: grid;
-  grid-template-columns: 1;
 }
 
 .inner-grid {
