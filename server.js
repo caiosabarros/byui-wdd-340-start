@@ -10,6 +10,7 @@ const env = require("dotenv").config()
 const app = express()
 const static = require("./routes/static")
 const expressLayouts = require("express-ejs-layouts")
+const baseController = require("./controllers/baseController")
 
 /* ***********************
  * View Engine and Templates
@@ -24,11 +25,7 @@ app.set("layout","./layouts/layout") // not at views root
 app.use(static)
 
 // Index route
-app.get("/", function(req,res) {
-// The "res" is the response object, while "render()" is an Express function that will retrieve the specified view - "index" - to be sent back to the browser.
-	res.render("index", {title:"Home"})
-// The curly braces are an object (treated like a variable), which holds a name - value pair. This object supplies the value that the "head" partial file expects to receive. The object is passed to the view.
-})
+app.get("/", baseController.buildHome)
 
 /* ***********************
  * Local Server Information
