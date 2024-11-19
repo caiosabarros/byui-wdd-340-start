@@ -12,6 +12,7 @@ const static = require("./routes/static")
 const expressLayouts = require("express-ejs-layouts")
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
+const internalErrorRoute = require("./routes/internalErrorRoute")
 const utilities = require("./utilities");
 
 /* ***********************
@@ -32,6 +33,9 @@ app.use("/inv", inventoryRoute)
 // Index route
 app.get("/", utilities.handleErrors(baseController.buildHome))
 
+// Error route
+app.use("/error", internalErrorRoute)
+
 // File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {
   next({ status: 404, message: 'Sorry, we appear to have lost that page.' })
@@ -45,8 +49,9 @@ app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav()
   console.error(`Error at: "${req.originalUrl}": ${err.message}`)
   if (err.status == 404) { message = err.message } else { message = 'Oh no! There was a crash. Maybe try a different route?' }
+  if (err.status == 500 || !err.status) { message = 'Oh no! We could not determine what happened :/'; err.status = 500; }
   res.render("errors/error", {
-    title: err.status || 'Server Error',
+    title: err.status == 500 ? 'Server Error' : err.status,
     message,
     nav
   })
