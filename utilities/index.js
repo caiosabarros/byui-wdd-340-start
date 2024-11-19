@@ -27,6 +27,10 @@ Util.getNav = async function (req, res, next) {
 function formatToDolar(amount) {
   return `${amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`
 }
+
+function formatToMileage(amount) {
+  return `${amount.toLocaleString('en-US', { style: 'unit', unit: 'mile' })}`
+}
 /* **************************************
 * Build the inventory detail view HTML
 * ************************************ */
@@ -40,10 +44,10 @@ Util.buildItemDetailView = async function (data) {
        <img id="inv-img" src="${data.inv_image}" alt="${data.inv_make} ${data.inv_model}">
        <div id="inv-display-detail">
         <h2>${data.inv_make} ${data.inv_model}</h2>
-        <h4 id="inv-year">Year: ${data.inv_year}</h4>
-        <h4 id="inv-miles">Miles: ${data.inv_price}</h4>
-        <h4 id="inv-color">Color: ${data.inv_color}</h4>
-        <h4 id="inv-price">Price: ${formatToDolar(parseInt(data.inv_price))}</h4>
+        <p id="inv-year"><strong>Year:</strong> ${data.inv_year}</p>
+        <p id="inv-miles"><strong>Miles:</strong> ${formatToMileage(data.inv_miles)}</p>
+        <p id="inv-color"><strong>Color:</strong> ${data.inv_color}</p>
+        <p id="inv-price"><strong>Price:</strong> ${formatToDolar(parseInt(data.inv_price))}</p>
         <p id="inv-description">${data.inv_description}</p>
        </div>
       </div>
