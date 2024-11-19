@@ -130,8 +130,16 @@ a {
   margin-bottom: 3%;
 }
 
+/* Inv Detail View */
+.inv {
+  display: grid;
+  grid-template-columns: 1;
+}
 
-
+#inv-img {
+  max-width: 100%;
+  height: auto;
+}
 
 
 @media (min-width: 900px) {
@@ -184,4 +192,22 @@ a {
     margin: 0;
     padding: 0;
   }
+
+  /* Inv Detail View */
+  .inv {
+    display: grid;
+    grid-template-columns: 2;
+    grid-gap: 5%
+  }
+
+  #inv-img {
+    max-width: 100%;
+    height: auto;
+    grid-column: 1/2;
+  }
+
+  #inv-display-detail {
+    grid-column: 2/3;
+  }
+
 }
