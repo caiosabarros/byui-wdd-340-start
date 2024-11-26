@@ -141,6 +141,24 @@ a {
   height: auto;
 }
 
+#login-form {
+  background-color: #4c96d7;
+  /* background-color: #fa6502; */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-items: center;
+  text-align: center;
+  padding: 5%;
+}
+
+#login-form a {
+  background-color: blue;
+  padding: 0.5%;
+  color: white;
+  /* text-decoration: none; */
+}
+
 
 @media (min-width: 900px) {
 
@@ -209,5 +227,19 @@ a {
   #inv-display-detail {
     grid-column: 2/3;
   }
+
+  #login-form {
+    background-color: #4c96d7;
+    /* background-color: #fa6502; */
+    display: flex;
+    flex-direction: column;
+    /* gap: 10px; */
+    /* justify-items: center; */
+    text-align: center;
+    padding: 1%;
+    /* color: white; */
+  }
+
+
 
 }

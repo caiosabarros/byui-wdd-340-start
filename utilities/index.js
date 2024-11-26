@@ -31,6 +31,26 @@ function formatToDolar(amount) {
 function formatToMileage(amount) {
   return `${amount.toLocaleString('en-US', { style: 'unit', unit: 'mile' })}`
 }
+
+/* **************************************
+* Build the account login form view HTML
+* ************************************ */
+Util.buildLoginFormView = async function (onSubmit) {
+  let form = ''
+  form =
+    `
+    <form id="login-form" onsubmit="${onSubmit}">
+      <label for="account_email">Email</label>
+      <input id="account_email" type="email" required>
+      <label for="account_password">Password</label>
+      <input id="account_password" type="password" required>
+      <input type="submit" value="Login"/>
+      <p>Don't have an account? <a href="#">Sign Up</a></p>
+    </form>
+    `
+  return form
+}
+
 /* **************************************
 * Build the inventory detail view HTML
 * ************************************ */

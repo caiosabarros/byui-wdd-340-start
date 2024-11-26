@@ -11,9 +11,41 @@ const app = express()
 const static = require("./routes/static")
 const expressLayouts = require("express-ejs-layouts")
 const baseController = require("./controllers/baseController")
+const accountRoute = require("./routes/accountRoute")
 const inventoryRoute = require("./routes/inventoryRoute")
 const internalErrorRoute = require("./routes/internalErrorRoute")
 const utilities = require("./utilities");
+const session = require("express-session")
+const pool = require('./database/')
+
+/* ***********************
+  * Middleware
+  * ************************/
+// Recall that app.use() applies whatever is being invoked throughout the entire application.
+app.use(session({
+  store: new (require('connect-pg-simple')(session))({
+    createTableIfMissing: true,
+    pool,
+  }),
+  secret: process.env.SESSION_SECRET,
+  resave: true, // true because it's flash messages
+  saveUninitialized: true,
+  name: 'sessionId', // In order to maintain "state", 
+  // the session id will be stored into a cookie and 
+  // passed back and forth from the server to the browser.
+  // We will not create the cookie, the session package will do so.The only item it will contain is the name "sessionId" and the actual value of the ID.
+}))
+
+// Express Messages Middleware
+app.use(require('connect-flash')())
+/**
+ *  The express-messages package is required as a function. The function accepts the request and response objects as parameters. The functionality of the this function is assigned to the response object, using the "locals" option and a name of "messages". This allows any message to be stored into the response, making it available in a view.
+ */
+app.use(function (req, res, next) {
+  // Ultimately, this allows messages to be set, then pass on to the next process. Eventually, when a view is built, the message can be displayed in it.
+  res.locals.messages = require('express-messages')(req, res)
+  next()
+})
 
 /* ***********************
  * View Engine and Templates
@@ -29,6 +61,9 @@ app.use(static)
 
 // Inventory routes
 app.use("/inv", inventoryRoute)
+
+// Account routes
+app.use("/account", accountRoute)
 
 // Index route
 app.get("/", utilities.handleErrors(baseController.buildHome))
