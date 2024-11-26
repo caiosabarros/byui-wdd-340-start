@@ -45,11 +45,36 @@ Util.buildLoginFormView = async function (onSubmit) {
       <label for="account_password">Password</label>
       <input id="account_password" type="password" required>
       <input type="submit" value="Login"/>
-      <p>Don't have an account? <a href="#">Sign Up</a></p>
+      <p>Don't have an account? <a href="/account/register">Sign Up</a></p>
     </form>
     `
   return form
 }
+
+/* **************************************
+* Build the account register form view HTML
+* ************************************ */
+Util.buildRegistrationFormView = async function (onSubmit) {
+  let form = ''
+  form =
+    `
+    <form id="register-form" onsubmit="${onSubmit}">
+      <label for="account_firstname">First Name</label>
+      <input id="account_firstname" type="text"/>
+      <label for="account_lastname">Last Name</label>
+      <input id="account_lastname" type="text"/>
+      <label for="account_email">Email</label>
+      <input id="account_email" type="email" required>
+      <label for="account_password">Password</label>
+      <input id="account_password" type="password" minlength="12" oninput="checkPassword(this)" required>
+      <span id="invalid-input"></span>
+      <input id="register-submit" type="submit" value="Register"/>
+      <p>Already have an account? <a href="/account/login">LogIn</a></p>
+    </form>
+    `
+  return form
+}
+
 
 /* **************************************
 * Build the inventory detail view HTML

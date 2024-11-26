@@ -13,5 +13,14 @@ accountController.buildLogin = async function (req, res, next) {
     })
 }
 
+accountController.buildRegistration = async function (req, res, next) {
+    let nav = await utilities.getNav()
+    let form = await utilities.buildRegistrationFormView()
+    res.render("account/register", {
+        title: "Sign Up",
+        nav,
+        form
+    })
+}
 
 module.exports = accountController
