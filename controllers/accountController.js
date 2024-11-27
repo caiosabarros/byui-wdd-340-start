@@ -10,7 +10,8 @@ accountController.buildLogin = async function (req, res, next) {
     res.render("account/login", {
         title: "Login",
         nav,
-        form
+        form,
+        errors: null,
     })
 }
 
@@ -20,7 +21,8 @@ accountController.buildRegistration = async function (req, res, next) {
     res.render("account/register", {
         title: "Sign Up",
         nav,
-        form
+        form,
+        errors: null,
     })
 }
 
@@ -54,6 +56,7 @@ accountController.registerAccount = async function (req, res) {
         res.status(501).render("account/register", {
             title: "Registration",
             nav,
+            form: null
         })
     }
 }
