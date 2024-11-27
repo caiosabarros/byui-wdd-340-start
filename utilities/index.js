@@ -41,9 +41,10 @@ Util.buildLoginFormView = async function (onSubmit) {
     `
     <form id="login-form" onsubmit="${onSubmit}">
       <label for="account_email">Email</label>
-      <input id="account_email" type="email" required>
+      <input required name="account_email" type="email" required>
       <label for="account_password">Password</label>
-      <input id="account_password" type="password" required>
+      <small>There must be at least 12 characters, one must be a number, one must be a lowercase letter, one must be a capital letter, and one must be a non-alphanumeric character.</small>
+      <input required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" name="account_password" type="password" required>
       <input type="submit" value="Login"/>
       <p>Don't have an account? <a href="/account/register">Sign Up</a></p>
     </form>
@@ -64,10 +65,10 @@ Util.buildRegistrationFormView = async function () {
       <label for="account_lastname">Last Name</label>
       <input required id="account_lastname" name="account_lastname" type="text"/>
       <label for="account_email">Email</label>
-      <input required id="account_email" name="account_email" type="email" required>
+      <input required id="account_email" name="account_email" type="email">
       <label for="account_password">Password</label>
-      <input required id="account_password" name="account_password" type="password" minlength="12" oninput="checkPassword(this)" required>
-      <span id="invalid-input"></span>
+      <small id="invalid-input">There must be at least 12 characters, one must be a number, one must be a lowercase letter, one must be a capital letter, and one must be a non-alphanumeric character.</small>
+      <input required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" name="account_password" type="password" minlength="12">
       <input id="register-submit" type="submit" value="Register"/>
       <p>Already have an account? <a href="/account/login">LogIn</a></p>
     </form>
