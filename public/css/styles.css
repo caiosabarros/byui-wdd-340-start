@@ -170,6 +170,11 @@ a {
 
 @media (min-width: 900px) {
 
+  .notice {
+    color: red;
+    /* background-color: red; */
+  }
+
   .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;

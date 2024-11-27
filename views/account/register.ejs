@@ -6,14 +6,31 @@
 
         <%- messages() %>
 
-            <%- form %>
+            <% if (errors) { %>
+                <ul class="notice">
+                    <% errors.array().forEach(error=> { %>
+                        <li>
+                            <%= error.msg %>
+                        </li>
+                        <% }) %>
+                </ul>
+                <% } %>
 
-                <% if (errors) { %>
-                    <ul class="notice">
-                        <% errors.array().forEach(error=> { %>
-                            <li>
-                                <%= error.msg %>
-                            </li>
-                            <% }) %>
-                    </ul>
-                    <% } %>
+                    <form id="register-form" action="/account/register" method="post">
+                        <label for="account_firstname">First Name</label>
+                        <input required id="account_firstname" type="text" name="account_firstname" />
+                        <label for="account_lastname">Last Name</label>
+                        <input required id="account_lastname" name="account_lastname" type="text" />
+                        <label for="account_email">Email</label>
+                        <input required id="account_email" name="account_email" type="email">
+                        <label for="account_password">Password</label>
+                        <small id="invalid-input">There must be at least 12 characters, one must be a number, one must
+                            be a
+                            lowercase letter, one must be a capital letter, and one must be a non-alphanumeric
+                            character.</small>
+                        <input required name="account_password"
+                            pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" type="password"
+                            minlength="12">
+                        <input id="register-submit" type="submit" value="Register" />
+                        <p>Already have an account? <a href="/account/login">LogIn</a></p>
+                    </form>

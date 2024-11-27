@@ -6,11 +6,9 @@ accountController = {}
 * *************************************** */
 accountController.buildLogin = async function (req, res, next) {
     let nav = await utilities.getNav()
-    let form = await utilities.buildLoginFormView()
     res.render("account/login", {
         title: "Login",
         nav,
-        form,
         errors: null,
     })
 }
@@ -45,18 +43,16 @@ accountController.registerAccount = async function (req, res) {
             `Congratulations, you\'re registered ${account_firstname}. Please log in.`
         )
 
-        const form = await utilities.buildLoginFormView();
         res.status(201).render("account/login", {
             title: "Login",
             nav,
-            form
+            errors: null,
         })
     } else {
         req.flash("notice", "Sorry, the registration failed.")
         res.status(501).render("account/register", {
             title: "Registration",
-            nav,
-            form: null
+            nav
         })
     }
 }
