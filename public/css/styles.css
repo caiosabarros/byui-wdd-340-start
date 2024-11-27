@@ -172,7 +172,10 @@ a {
 
   .notice {
     color: red;
-    /* background-color: red; */
+  }
+
+  .success {
+    color: green;
   }
 
   .grid {

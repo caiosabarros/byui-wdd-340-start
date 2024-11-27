@@ -39,7 +39,7 @@ accountController.registerAccount = async function (req, res) {
     )
     if (regResult) {
         req.flash(
-            "notice",
+            "success",
             `Congratulations, you\'re registered ${account_firstname}. Please log in.`
         )
 
