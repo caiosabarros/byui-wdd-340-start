@@ -6,4 +6,8 @@
 
         <%# messages() %>
 
-            <%- form %>
+            <% if (typeof form !=='undefined' && form) { %>
+                <%- form %>
+                    <% } else { %>
+
+                        <% } %>
