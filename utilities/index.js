@@ -68,7 +68,7 @@ Util.buildRegistrationFormView = async function () {
       <input required id="account_email" name="account_email" type="email">
       <label for="account_password">Password</label>
       <small id="invalid-input">There must be at least 12 characters, one must be a number, one must be a lowercase letter, one must be a capital letter, and one must be a non-alphanumeric character.</small>
-      <input required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" name="account_password" type="password" minlength="12">
+      <input required name="account_password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" type="password" minlength="12">
       <input id="register-submit" type="submit" value="Register"/>
       <p>Already have an account? <a href="/account/login">LogIn</a></p>
     </form>
