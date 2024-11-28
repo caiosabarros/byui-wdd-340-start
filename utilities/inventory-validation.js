@@ -30,7 +30,7 @@ validate.addInventoryRules = () => {
             .notEmpty()
             .isString()
             .matches(/^[a-zA-Z\s]*$/) // enforce the pattern on the server-side as well
-            .withMessage("Please provide an alphanumeric classification name"), // on error this message is sent.
+            .withMessage("Please provide a valid inventory make"), // on error this message is sent.
 
         // inv_model is required and must be a string
         body("inv_model")
@@ -39,7 +39,7 @@ validate.addInventoryRules = () => {
             .notEmpty()
             .isString()
             .matches(/^[a-zA-Z\s]*$/) // enforce the pattern on the server-side as well
-            .withMessage("Please provide an alphanumeric classification name"), // on error this message is sent.
+            .withMessage("Please provide a valid inventory model"), // on error this message is sent.
 
         // inv_year is required and must be a string
         body("inv_year")
@@ -48,7 +48,7 @@ validate.addInventoryRules = () => {
             .notEmpty()
             .isNumeric()
             .matches(/\d{4}/) // enforce the pattern on the server-side as well
-            .withMessage("Please provide an alphanumeric classification name"), // on error this message is sent.
+            .withMessage("Please provide a valid inventory year"), // on error this message is sent.
 
         // inv_make is required and must be a string
         body("inv_description")
@@ -56,7 +56,7 @@ validate.addInventoryRules = () => {
             .escape()
             .notEmpty()
             .isString()
-            .withMessage("Please provide an alphanumeric classification name"), // on error this message is sent.
+            .withMessage("Please provide a valid inventory description"), // on error this message is sent.
 
         // inv_image is required and must be a string
         body("inv_image")
@@ -64,7 +64,7 @@ validate.addInventoryRules = () => {
             .escape()
             .notEmpty()
             .isString()
-            .withMessage("Please provide an alphanumeric classification name"), // on error this message is sent.
+            .withMessage("Please provide a valid inventory image"), // on error this message is sent.
 
         // inv_thumbnail is required and must be a string
         body("inv_thumbnail")
@@ -72,7 +72,7 @@ validate.addInventoryRules = () => {
             .escape()
             .notEmpty()
             .isString()
-            .withMessage("Please provide an alphanumeric classification name"), // on error this message is sent.
+            .withMessage("Please provide a valid inventory thumbnail"), // on error this message is sent.
 
         // inv_price is required and must be a string
         body("inv_price")
@@ -80,7 +80,7 @@ validate.addInventoryRules = () => {
             .escape()
             .notEmpty()
             .isNumeric()
-            .withMessage("Please provide an alphanumeric classification name"), // on error this message is sent.
+            .withMessage("Please provide a valid inventory price"), // on error this message is sent.
 
         // inv_miles is required and must be a string
         body("inv_miles")
@@ -88,22 +88,21 @@ validate.addInventoryRules = () => {
             .escape()
             .notEmpty()
             .isNumeric()
-            .withMessage("Please provide an alphanumeric classification name"), // on error this message is sent.
+            .withMessage("Please provide a valid inventory miles"), // on error this message is sent.
 
         // inv_color is required and must be a string
         body("inv_color")
             .trim()
             .escape()
             .notEmpty()
-            .isNumeric()
-            .withMessage("Please provide an alphanumeric classification name"), // on error this message is sent.
+            .withMessage("Please provide a valid inventory color"), // on error this message is sent.
 
         body("classification_id")
             .trim()
             .escape()
             .notEmpty()
             .isNumeric()
-            .withMessage("One classification type must be selected");
+            .withMessage("One classification type must be selected"),
     ]
 }
 
@@ -121,6 +120,7 @@ validate.checkInventoryData = async (req, res, next) => {
     errors = validationResult(req)
     if (!errors.isEmpty()) {
         let nav = await utilities.getNav()
+        let select_classification = await utilities.buildClassificationList(classification_id)
         res.render("./inventory/add-inventory", {
             errors,
             title: "Add Inventory",
@@ -135,7 +135,7 @@ validate.checkInventoryData = async (req, res, next) => {
             inv_price,
             inv_miles,
             inv_color,
-            classification_id
+            select_classification
         })
         return
     }

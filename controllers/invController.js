@@ -47,14 +47,25 @@ invCont.buildInventoryItem = async function (req, res, next) {
 }
 
 invCont.addNewInventory = async function (req, res, next) {
+  let nav = await utilities.getNav()
   try {
     const { inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id } = req.body
     const data = await invModel.insertNewInventory(inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id)
-    console.log(data.rows[0]);
+    console.log("53", data.rows[0]);
     req.flash("success", 'Great! Inventory for ' + inv_make + ' ' + inv_model + ' created!')
 
     res.render("./inventory/management", {
       title: "Management",
+      nav,
+      errors: null,
+    })
+  } catch (error) {
+
+    req.flash("notice", 'Sorry, there was an error processing the new inventory.')
+    let select_classification = await utilities.buildClassificationList(req.body.classification_id)
+    console.log("66", select_classification)
+    res.status(500).render("./inventory/add-inventory", {
+      title: "Add Classification",
       nav,
       inv_make,
       inv_model,
@@ -65,16 +76,7 @@ invCont.addNewInventory = async function (req, res, next) {
       inv_price,
       inv_miles,
       inv_color,
-      classification_id,
-      errors: null,
-    })
-  } catch (error) {
-    let nav = await utilities.getNav()
-
-    req.flash("notice", 'Sorry, there was an error processing the new inventory.')
-    res.status(500).render("./inventory/add-inventory", {
-      title: "Add Classification",
-      nav,
+      select_classification,
       errors: null,
     })
   }
@@ -149,7 +151,8 @@ invCont.buildClassificationForm = async function (req, res, next) {
 invCont.buildInventoryForm = async function (req, res, next) {
   try {
     let nav = await utilities.getNav()
-    let select_classification = await utilities.buildClassificationList();
+    let select_classification = await utilities.buildClassificationList()
+    console.log("select_classification", select_classification)
     res.render("./inventory/add-inventory", {
       title: "Add Inventory",
       nav,

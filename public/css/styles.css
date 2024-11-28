@@ -176,6 +176,14 @@ a {
   gap: 20px;
 }
 
+#addInventory {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: 0 40% 0 40%;
+  gap: 6px;
+}
+
 @media (min-width: 900px) {
 
   .notice {
