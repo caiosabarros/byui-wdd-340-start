@@ -184,6 +184,14 @@ a {
   gap: 6px;
 }
 
+#management-container {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  margin: 0 50% 0 50%;
+  text-align: center;
+}
+
 @media (min-width: 900px) {
 
   .notice {
@@ -280,5 +288,7 @@ a {
     margin: 0 30% 0 30%;
   }
 
-
+  #management-container {
+    flex-direction: row;
+  }
 }
