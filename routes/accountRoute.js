@@ -15,5 +15,14 @@ router.post(
     regValidate.checkRegData, //  The call to run the validation and handle the errors, if any.
     utilities.handleErrors(accountController.registerAccount) // The call to the controller to handle the registration, if no errors occur in the validation process.
 )
+// Process the login attempt
+router.post(
+    "/login",
+    regValidate.loginRules(),
+    regValidate.checkLoginData,
+    utilities.handleErrors((req, res) => {
+        res.status(200).send('login process')
+    })
+)
 
 module.exports = router;

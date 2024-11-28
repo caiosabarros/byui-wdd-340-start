@@ -140,7 +140,7 @@ a {
   height: auto;
 }
 
-#login-form {
+#loginForm {
   background-color: #4c96d7;
   /* background-color: #fa6502; */
   display: flex;
@@ -151,7 +151,7 @@ a {
   padding: 5%;
 }
 
-#login-form a,
+#loginForm a,
 #register-form a {
   background-color: blue;
   padding: 0.5%;
@@ -243,7 +243,7 @@ a {
     grid-column: 2/3;
   }
 
-  #login-form {
+  #loginForm {
     background-color: #4c96d7;
     display: flex;
     flex-direction: column;
