@@ -12,10 +12,9 @@ router.get("/detail/:itemId", utilities.handleErrors(invController.buildInventor
 //
 router.get("/management", utilities.handleErrors(invController.buildManagement));
 // Route to add classification 
-// TODO: bring fn from controller that inserts classification into the db through the model
-// TODO: bring fn from utilities that validate what's being received.
 router.post("/classification", invValidate.addClassificationRules(), invValidate.checkClassificationData, utilities.handleErrors(invController.addNewClassification));
 router.get("/add-classification", utilities.handleErrors(invController.buildClassificationForm));
-
+router.get("/add-inventory", utilities.handleErrors(invController.buildInventoryForm));
+router.post("/add-inventory", invValidate.addInventoryRules(), invValidate.checkInventoryData, utilities.handleErrors(invController.addNewInventory));
 
 module.exports = router;
