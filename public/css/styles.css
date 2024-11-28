@@ -168,6 +168,14 @@ a {
   padding: 5%;
 }
 
+#addClassification {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: 0 40% 0 40%;
+  gap: 20px;
+}
+
 @media (min-width: 900px) {
 
   .notice {

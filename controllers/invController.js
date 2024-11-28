@@ -45,4 +45,66 @@ invCont.buildInventoryItem = async function (req, res, next) {
   }
 }
 
+invCont.addNewClassification = async function (req, res, next) {
+
+  try {
+    const { classification_name } = req.body
+    const data = await invModel.insertClassification(classification_name)
+    const className = data.rows[0].classification_name
+
+    // getNav after insert to make sure it has been updated
+    nav = await utilities.getNav()
+
+    req.flash("success", 'Great! ' + className + ' classification created!')
+    res.render("./inventory/management", {
+      title: className + " vehicles",
+      nav,
+      errors: null,
+    })
+  } catch (error) {
+    let nav = await utilities.getNav()
+
+    req.flash("notice", 'Sorry, there was an error processing the new classification.')
+    res.status(500).render("./inventory/add-classification", {
+      title: "Add Classification",
+      nav,
+      errors: null,
+    })
+  }
+}
+
+/* ***************************
+ *  Build the basic for the management view
+ * ************************** */
+invCont.buildManagement = async function (req, res, next) {
+  try {
+    let nav = await utilities.getNav()
+    res.render("./inventory/management", {
+      title: "Management",
+      nav,
+      errors: null,
+    })
+  } catch (error) {
+    console.error("Error ", error.message)
+    next(error)
+  }
+}
+
+/* ***************************
+ *  Add inventory classification form view
+ * ************************** */
+invCont.buildClassificationForm = async function (req, res, next) {
+  try {
+    let nav = await utilities.getNav()
+    res.render("./inventory/add-classification", {
+      title: "Add Classification",
+      nav,
+      errors: null,
+    })
+  } catch (error) {
+    console.error("Error ", error.message)
+    next(error)
+  }
+}
+
 module.exports = invCont
