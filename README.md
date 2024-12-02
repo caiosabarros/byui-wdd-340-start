@@ -45,3 +45,27 @@ When you installed Git and cloned the remote repository in week 1, you should ha
 1. Go to http://localhost:5500 in a browser tab. Nothing should be visible as the server has not been setup to repond to that route.
 2. Add "/filename.html" to the end of the URL (replacing filename with the name of the file you moved to the public folder).
 3. You should see that page in the browser.
+
+## Notes
+A token is simply a "ticket", which is carried from one location to another. Upon arrival, the ticket is examined for authenticity. If valid, the ticket holder is admitted. In our case, the JWT is created on our server and sent to the client's browser within a cookie. The client will automatically send the cookie back to our server with every request. When the cookie arrives, the server checks the token it carries. If valid, the server allows the request to be carried out. If the token is missing or not valid, the request is denied.
+
+Unfortunately, using a cookie as the transfer mechanism creates a potential means of attacking our server, known as a Cross Site Request Forgery attack. In short, another site steals the cookie, then sends the cookie to our server, pretending to be the browser to whom the cookie was originally sent.
+
+Cookie? No, not that kind (I love white chocolate chip with macadamia nuts - just in case you are interested)! I know, it's a strange name for a small text file that is created by the server, sent to and stored in the browser. As with most data it consists of a number of "name - value pairs". What is unique is that when the browser visits the website that created the cookie, the cookie is automatically sent back to the server as part of every "http request" until the cookie is destroyed.
+
+Cookies are small. The maximum size they can be is 4K (4 kilobytes). In addition, they are typically plain text and can be changed in the browser. As a result, they should NEVER be used for sensitive information!
+
+Without getting carried away, you should know that there are several types of cookies:
+
+Persistent Cookie
+A "persistent" cookie is one which lasts beyond the current set of interactions between the browser and the server. These cookies are given a life span at the time they are created. That life span can be increased or decreased by the code on the server. The means of setting the lifespan is by using the expire value, as an option, in the res.cookie(name, 'value', {expire: 3600000 + Date.now()}) . In the provided example the cookie will expire in one hour (1000 milliseconds * 60 seconds * 60 minutes).
+Session Cookie
+A "session" cookie is created without an "expire" option and is destroyed when the session ends. Typically, there are three main ways of ending a session:
+The browser window is closed.
+The session "times out" due to inactivity. This time factor can be altered but typically is around 24 minutes.
+The cookie is given an expiry value in the past or perhaps of 1 millisecond in the future. This can occur at the end of a logout procedure or at the end of a "check-out" process.
+There are other cookies, but to one extent or another they are variations of the persistent cookie.
+
+Have you ever registered with a website and when you return to the site sometime in the future, the site somehow shows your name, even when you haven't logged into the site? Chances are it is a cookie at work. Some sites use "Third Party Cookies". A third-party cookie is set by one website, but used by another website. This use is usually for advertising but can also be used for tracking your browsing habits. It is this browsing function that has caused a wide variety of new privacy laws to be passed and forced websites to notify you that they use cookies. Perhaps you've seen such notices appear on websites you visit, that show you a warning notice that you have to acknowledge for it to go away.
+
+

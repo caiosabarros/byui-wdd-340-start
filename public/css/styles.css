@@ -184,6 +184,14 @@ a {
   gap: 6px;
 }
 
+#updateForm {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: 0 40% 0 40%;
+  gap: 6px;
+}
+
 #management-container {
   display: flex;
   flex-direction: column;
@@ -191,6 +199,26 @@ a {
   margin: 0 50% 0 50%;
   text-align: center;
 }
+
+#classificationList {
+  font-size: 20px;
+  padding: 1%;
+  border: none;
+  appearance: button;
+  outline: none;
+}
+
+#inventoryDisplay {
+  border: 1px solid black;
+  text-align: center;
+
+}
+
+#inventoryDisplay thead {
+  display: flex;
+  text-align: center;
+}
+
 
 @media (min-width: 900px) {
 

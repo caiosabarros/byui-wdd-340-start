@@ -8,6 +8,8 @@ const regValidate = require('../utilities/account-validation')
 // Route for the path that will be sent when the "My Account" link is clicked.
 router.get("/login", utilities.handleErrors(accountController.buildLogin));
 router.get("/register", utilities.handleErrors(accountController.buildRegistration));
+// account management view
+router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.deliverAccountManagement));
 // Process the registration data
 router.post(
     "/register",
@@ -20,9 +22,7 @@ router.post(
     "/login",
     regValidate.loginRules(),
     regValidate.checkLoginData,
-    utilities.handleErrors((req, res) => {
-        res.status(200).send('login process')
-    })
+    utilities.handleErrors(accountController.accountLogin)
 )
 
 module.exports = router;

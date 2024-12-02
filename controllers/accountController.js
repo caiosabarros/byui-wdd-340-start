@@ -1,6 +1,8 @@
 const utilities = require("../utilities/")
 const accountModel = require("../models/account-model")
 const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 accountController = {}
 /* ****************************************
 *  Deliver login view
@@ -11,6 +13,18 @@ accountController.buildLogin = async function (req, res, next) {
         title: "Login",
         nav,
         errors: null,
+    })
+}
+
+/* ****************************************
+ *  Process login request
+ * ************************************ */
+accountController.deliverAccountManagement = async function (req, res, next) {
+    let nav = await utilities.getNav()
+    res.render("account/management", {
+        title: 'Logged In',
+        nav,
+        errors: null
     })
 }
 
@@ -70,6 +84,49 @@ accountController.registerAccount = async function (req, res) {
             title: "Registration",
             nav
         })
+    }
+}
+
+/* ****************************************
+ *  Process login request
+ * ************************************ */
+accountController.accountLogin = async function accountLogin(req, res) {
+    let nav = await utilities.getNav()
+    const { account_email, account_password } = req.body
+    const accountData = await accountModel.getAccountByEmail(account_email)
+    if (!accountData) {
+        req.flash("notice", "Please check your credentials and try again.")
+        res.status(400).render("account/login", {
+            title: "Login",
+            nav,
+            errors: null,
+            account_email,
+        })
+        return
+    }
+    try {
+        if (await bcrypt.compare(account_password, accountData.account_password)) {
+            delete accountData.account_password
+            const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
+            if (process.env.NODE_ENV === 'development') {
+                // a new cookie is created, named "jwt", the JWT token is stored in the cookie, and the options of "httpOnly: true" and "maxAge: 3600 * 1000" are set. This means that the cookie can only be passed through the HTTP protocol and cannot be accessed by client-side JavaScript. It will also expire in 1 hour.
+                res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
+            } else {
+                res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
+            }
+            return res.redirect("/account/")
+        }
+        else {
+            req.flash("message notice", "Please check your credentials and try again.")
+            res.status(400).render("account/login", {
+                title: "Login",
+                nav,
+                errors: null,
+                account_email,
+            })
+        }
+    } catch (error) {
+        throw new Error('Access Forbidden')
     }
 }
 
