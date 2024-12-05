@@ -3,7 +3,62 @@ const accountModel = require("../models/account-model")
 const { body, validationResult } = require("express-validator")
 const validate = {}
 
+/*  **********************************
+  *  Update Account Data Validation Rules
+  * ********************************* */
+validate.updateRules = () => {
+    return [
+        // valid email is required and cannot already exist in the DB
+        body("account_email")
+            .trim()
+            .escape()
+            .notEmpty()
+            .isEmail()
+            .normalizeEmail() // refer to validator.js docs
+            .withMessage("A valid email is required.")
+            .custom(async (account_email) => {
+                const emailExists = await accountModel.checkExistingEmail(account_email)
+                if (emailExists) {
+                    throw new Error("Email exists. Please log in or use different email")
+                }
+            }),
 
+        // valid email is required and cannot already exist in the DB
+        body("account_firstname")
+            .trim()
+            .escape()
+            .notEmpty()
+            .isString(),
+
+        // valid email is required and cannot already exist in the DB
+        body("account_lastname")
+            .trim()
+            .escape()
+            .notEmpty()
+            .isString(),
+    ]
+}
+
+validate.checkUpdateData = async () => {
+    const { account_email, account_firstname, account_lastname } = req.body
+    let errors = []
+    //  calls the express-validator "validationResult" function and sends the request object (containing all the incoming data) as a parameter. 
+    // All errors, if any, will be stored into the errors array.
+    errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        let nav = await utilities.getNav()
+        res.render("account/", {
+            errors,
+            title: "Login",
+            nav,
+            account_email, // stick this
+            account_firstname, // stick this
+            account_lastname // stick this
+        })
+        return
+    }
+    next()
+}
 /*  **********************************
   *  Registration Data Validation Rules
   * ********************************* */

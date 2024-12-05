@@ -2,6 +2,7 @@ const utilities = require("../utilities/")
 const accountModel = require("../models/account-model")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+const { localsName } = require("ejs")
 require("dotenv").config()
 accountController = {}
 /* ****************************************
@@ -28,9 +29,68 @@ accountController.deliverAccountManagement = async function (req, res, next) {
     })
 }
 
+accountController.getUpdateAccountView = async function (req, res, next) {
+    let nav = await utilities.getNav()
+    // get account info by its id
+    try {
+        const account_id = parseInt(req.params.accountId)
+
+        let accountData = await invModel.getAccountById(account_id)
+
+        locals.accountData = accountData
+        console.log("itemData", accountData)
+
+        res.render("account/update", {
+            title: "Update Account Information",
+            nav,
+            errors: null,
+        })
+    } catch (error) {
+        next(error)
+    }
+
+}
+
+/* ***************************
+ *  Update Account Data
+ * ************************** */
+accountController.updateAccountView = async function (req, res, next) {
+    let nav = await utilities.getNav()
+    const {
+        account_firstname,
+        account_lastname,
+        account_email,
+        account_id
+    } = req.body
+    const updateResult = await accountModel.updateAccount(
+        account_firstname,
+        account_lastname,
+        account_email,
+        account_id
+    )
+    console.log("updateResult", updateResult)
+    if (updateResult) {
+        req.flash("success", `Information for ${updateResult.account_firstname + ' ' + updateResult.account_lastname} was successfully updated.`)
+        // TODO: update local accountData obj here 
+        // and pass it down ?
+        res.redirect("/account/")
+    } else {
+        const accountData = await accountModel.getAccountByEmail(account_email)
+        if (!accountData) {
+            req.flash("notice", "Sorry, the updating your account failed.")
+            res.status(500).render("account/login", {
+                title: "Update Account",
+                nav,
+                errors: null,
+                account_email,
+            })
+            return
+        }
+    }
+}
+
 accountController.buildRegistration = async function (req, res, next) {
     let nav = await utilities.getNav()
-    let form = await utilities.buildRegistrationFormView()
     res.render("account/register", {
         title: "Sign Up",
         nav,

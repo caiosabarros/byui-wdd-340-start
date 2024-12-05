@@ -68,4 +68,4 @@ There are other cookies, but to one extent or another they are variations of the
 
 Have you ever registered with a website and when you return to the site sometime in the future, the site somehow shows your name, even when you haven't logged into the site? Chances are it is a cookie at work. Some sites use "Third Party Cookies". A third-party cookie is set by one website, but used by another website. This use is usually for advertising but can also be used for tracking your browsing habits. It is this browsing function that has caused a wide variety of new privacy laws to be passed and forced websites to notify you that they use cookies. Perhaps you've seen such notices appear on websites you visit, that show you a warning notice that you have to acknowledge for it to go away.
 
-
+Something interesting is that to hide some functionality in the client browser, I should perform such functionality in the server-side. This is amazing. Also, when there is a condtional in a .ejs file, the browser will only display the conditional block path taken in the browser, because it will receive the result HTML document from the server...

@@ -1,9 +1,10 @@
 <header id="top-header">
-  <!-- <span class="siteName">
-    <a href="/" title="Return to home page">CSE Motors</a>
-  </span> -->
   <h1>CSE Motors</h1>
   <div id="tools">
-    <a title="Click to log in" href="/account/login">My Account</a>
+    <% if (locals.loggedin) { %>
+      <a title="Click to log out" href="/account/logout">Logout</a>
+      <% } else { %> <a title="Click to log in" href="/account/login">My Account</a>
+        <% } %>
+          <a title="Welcome Basic" href="/account/welcome">Welcome Basic</a>
   </div>
 </header>
