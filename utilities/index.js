@@ -49,7 +49,7 @@ Util.buildLoginFormView = async function (onSubmit) {
       <small>There must be at least 12 characters, one must be a number, one must be a lowercase letter, one must be a capital letter, and one must be a non-alphanumeric character.</small>
       <input required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" name="account_password" type="password" required>
       <input type="submit" value="Login"/>
-      <p>Don't have an account? <a href="/account/register">Sign Up</a></p>
+      <p>Don't have an account? <a href="account/register">Sign Up</a></p>
     </form>
     `
   return form
@@ -202,8 +202,8 @@ Util.checkJWTToken = (req, res, next) => {
   // outside if to handle case when user is logged out
 
   // req.path /inv/type/5 is an example...
-  restricted = ["/inv/management", "/inv/edit", "/inv/add-classification", "/inv/add-inventory"]
-  const isRestricted = restricted.some((route) => req.path.includes(route));
+  let restricted = ["/inv/management", "/inv/edit", "/inv/add-classification", "/inv/add-inventory"]
+  let isRestricted = restricted.some((route) => req.path.includes(route));
 
   if (req.cookies.jwt) {
     jwt.verify(

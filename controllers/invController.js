@@ -51,7 +51,6 @@ invCont.addNewInventory = async function (req, res, next) {
   try {
     const { inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id } = req.body
     const data = await invModel.insertNewInventory(inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id)
-    console.log("53", data.rows[0]);
     req.flash("success", 'Great! Inventory for ' + inv_make + ' ' + inv_model + ' created!')
 
     res.render("./inventory/management", {
@@ -63,7 +62,6 @@ invCont.addNewInventory = async function (req, res, next) {
 
     req.flash("notice", 'Sorry, there was an error processing the new inventory.')
     let select_classification = await utilities.buildClassificationList(req.body.classification_id)
-    console.log("66", select_classification)
     res.status(500).render("./inventory/add-inventory", {
       title: "Add Classification",
       nav,
@@ -87,7 +85,6 @@ invCont.addNewInventory = async function (req, res, next) {
  * ************************** */
 invCont.updateInventory = async function (req, res, next) {
   let nav = await utilities.getNav()
-  console.log("req.body 90", req.body)
   const {
     inv_make,
     inv_model,

@@ -149,7 +149,6 @@ validate.checkInventoryData = async (req, res, next) => {
  * The rendering of the next step after this validation is done in the controller...
  * ***************************** */
 validate.checkUpdateData = async (req, res, next) => {
-    console.log("req.body 152 ", req.body)
     const { inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id, inv_id } = req.body
     let errors = []
     //  calls the express-validator "validationResult" function and sends the request object (containing all the incoming data) as a parameter. 

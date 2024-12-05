@@ -17,6 +17,17 @@ accountController.buildLogin = async function (req, res, next) {
     })
 }
 
+
+accountController.logOutUser = async function (req, res, next) {
+    if (req.cookies.jwt) {
+        res.clearCookie("jwt")
+        // clear account info from the server
+        res.locals.accountData = {}
+        res.locals.loggedin = 0
+        return res.redirect("/account/login")
+    }
+}
+
 /* ****************************************
  *  Process login request
  * ************************************ */
@@ -92,7 +103,6 @@ accountController.buildRegistration = async function (req, res, next) {
     res.render("account/register", {
         title: "Sign Up",
         nav,
-        form,
         errors: null,
     })
 }
@@ -104,7 +114,6 @@ accountController.buildRegistration = async function (req, res, next) {
 accountController.passwordUpdateHandler = async function (req, res, next) {
     let nav = await utilities.getNav()
     const { account_id, account_password } = req.body
-    console.log("107", account_id)
     // fetch account info here to handle success or failure
     let accountData = await accountModel.getAccountById(account_id)
 

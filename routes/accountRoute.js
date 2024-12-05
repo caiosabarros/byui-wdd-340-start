@@ -8,6 +8,7 @@ const regValidate = require('../utilities/account-validation')
 // Route for the path that will be sent when the "My Account" link is clicked.
 router.get("/login", utilities.handleErrors(accountController.buildLogin));
 router.get("/register", utilities.handleErrors(accountController.buildRegistration));
+router.get("/logout", utilities.handleErrors(accountController.logOutUser));
 // account management view
 router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.deliverAccountManagement));
 router.get('/update/:accountId', utilities.handleErrors(accountController.getUpdateAccountView));
