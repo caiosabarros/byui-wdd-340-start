@@ -10,8 +10,10 @@ router.get("/login", utilities.handleErrors(accountController.buildLogin));
 router.get("/register", utilities.handleErrors(accountController.buildRegistration));
 // account management view
 router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.deliverAccountManagement));
-router.get('/update:accountId', utilities.handleErrors(accountController.getUpdateAccountView));
+router.get('/update/:accountId', utilities.handleErrors(accountController.getUpdateAccountView));
 router.post('/update', regValidate.updateRules(), regValidate.checkUpdateData, utilities.handleErrors(accountController.updateAccountView));
+router.post('/password', regValidate.passwordRules(), regValidate.checkUpdatePassword, utilities.handleErrors(accountController.passwordUpdateHandler));
+
 // Process the registration data
 router.post(
     "/register",

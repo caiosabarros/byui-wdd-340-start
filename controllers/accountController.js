@@ -34,16 +34,14 @@ accountController.getUpdateAccountView = async function (req, res, next) {
     // get account info by its id
     try {
         const account_id = parseInt(req.params.accountId)
-
-        let accountData = await invModel.getAccountById(account_id)
-
-        locals.accountData = accountData
-        console.log("itemData", accountData)
+        let accountData = await accountModel.getAccountById(account_id)
+        res.locals.accountData = accountData
 
         res.render("account/update", {
             title: "Update Account Information",
             nav,
-            errors: null,
+            accountData,
+            errors: null
         })
     } catch (error) {
         next(error)
@@ -62,18 +60,18 @@ accountController.updateAccountView = async function (req, res, next) {
         account_email,
         account_id
     } = req.body
+
+    // updateResult already has updated data due to RETURNING * statement, so we don't need to fetch it again
     const updateResult = await accountModel.updateAccount(
         account_firstname,
         account_lastname,
         account_email,
         account_id
     )
-    console.log("updateResult", updateResult)
     if (updateResult) {
+        res.locals.accountData = updateResult
         req.flash("success", `Information for ${updateResult.account_firstname + ' ' + updateResult.account_lastname} was successfully updated.`)
-        // TODO: update local accountData obj here 
-        // and pass it down ?
-        res.redirect("/account/")
+        res.render("account/management", { title: 'Updated Information', errors: null, nav })
     } else {
         const accountData = await accountModel.getAccountByEmail(account_email)
         if (!accountData) {
@@ -97,6 +95,61 @@ accountController.buildRegistration = async function (req, res, next) {
         form,
         errors: null,
     })
+}
+
+
+/* ***************************
+ *  Update Account Password
+ * ************************** */
+accountController.passwordUpdateHandler = async function (req, res, next) {
+    let nav = await utilities.getNav()
+    const { account_id, account_password } = req.body
+    console.log("107", account_id)
+    // fetch account info here to handle success or failure
+    let accountData = await accountModel.getAccountById(account_id)
+
+    // Hash the password before storing
+    let hashedPassword = ''
+    try {
+        // regular password and cost (salt is generated automatically)
+        hashedPassword = await bcrypt.hashSync(account_password, 10)
+    } catch (error) {
+        res.locals.accountData = accountData
+        req.flash("notice", 'Sorry, there was an error updating the password.')
+        res.status(500).render("account/management", {
+            title: "Update Information",
+            nav,
+            errors: null,
+        })
+    }
+
+    // make actual change
+    try {
+        accountData = accountModel.updatePassword(account_id, account_password)
+        console.log("accou", accountData)
+    } catch (error) {
+        console.error('error ' + error)
+    }
+
+    res.locals.accountData = accountData
+    if (accountData) {
+        req.flash(
+            "success",
+            `Congratulations, your password has been changed!`
+        )
+
+        res.status(201).render("account/management", {
+            title: "Update Information",
+            nav,
+            errors: null,
+        })
+    } else {
+        req.flash("notice", "Sorry, the update of the password failed.")
+        res.status(501).render("account/management", {
+            title: "Update Information",
+            nav
+        })
+    }
 }
 
 /* ****************************************

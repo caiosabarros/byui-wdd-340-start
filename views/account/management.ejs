@@ -15,8 +15,8 @@
                         <% }) %>
                 </ul>
                 <% } %>
-                    <% if (accountData) { %>
-                        <p><a href="/account/edit/?account=<%= locals.accountData.account_id %>">update
+                    <% if (locals.accountData) { %>
+                        <p><a href="/account/update/<%= locals.accountData.account_id %>">update
                                 account
                                 information</a></p>
                         <% if (locals.accountData.account_type=='Client' ) { %>

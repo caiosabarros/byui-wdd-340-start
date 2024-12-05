@@ -219,6 +219,18 @@ a {
   text-align: center;
 }
 
+#updateAccountForm fieldset {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0 10px 0;
+}
+
+#updatePasswordForm fieldset {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0 10px 0;
+}
+
 
 @media (min-width: 900px) {
 
@@ -319,4 +331,10 @@ a {
   #management-container {
     flex-direction: row;
   }
+
+  #updateAccountForm {
+    display: flex;
+    flex-direction: column;
+  }
+
 }

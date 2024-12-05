@@ -13,14 +13,24 @@ async function registerAccount(account_firstname, account_lastname, account_emai
     }
 }
 
+
+
 /* **********************
  *   Check for existing email
+    PS: it consistently returns whether someone else is using the email.
  * ********************* */
-async function checkExistingEmail(account_email) {
+async function checkExistingEmail(account_email, account_id = null) {
     try {
         const sql = "SELECT * FROM account WHERE account_email = $1"
         const email = await pool.query(sql, [account_email])
-        return email.rowCount
+        if (account_id) {
+
+            // the below is: is the account_id the only account with that email?
+            return !(email.rows.length > 0 && email.rows[0].account_id == parseInt(account_id))
+            // in the above, rows[0] is used because we assume no possible way to getting to accounts
+            // to use the same email since this fn will always be used.
+        }
+        return email.rowCount > 0
     } catch (error) {
         return error.message
     }
@@ -46,8 +56,20 @@ async function updateAccount(account_firstname,
     account_id) {
     try {
         const data = await pool.query(
-            'UPDATE account SET account_firstname = $1, account_lastname = $2, account_email = $3 WHERE account_id = $4 RETURNING * ',
+            "UPDATE account SET account_firstname = $1, account_lastname = $2, account_email = $3 WHERE account_id = $4 RETURNING *",
             [account_firstname, account_lastname, account_email, account_id]
+        )
+        return data.rows[0]
+    } catch (error) {
+        console.error("model error: " + error)
+    }
+}
+
+async function updatePassword(account_id, account_password) {
+    try {
+        const data = await pool.query(
+            "UPDATE account SET account_password = $1 WHERE account_id = $2 RETURNING *",
+            [account_password, account_id]
         )
         return data.rows[0]
     } catch (error) {
@@ -58,12 +80,13 @@ async function updateAccount(account_firstname,
 async function getAccountById(account_id) {
     try {
         const data = await pool.query(
-            'SELECT * FROM account WHERE account_id = $1',
+            "SELECT * FROM account WHERE account_id = $1",
             [account_id]
         )
+        return data.rows[0]
     } catch (error) {
         console.error("account model error " + error)
     }
 }
 
-module.exports = { registerAccount, checkExistingEmail, getAccountByEmail, updateAccount, getAccountById };
+module.exports = { registerAccount, checkExistingEmail, updatePassword, getAccountByEmail, updateAccount, getAccountById };
