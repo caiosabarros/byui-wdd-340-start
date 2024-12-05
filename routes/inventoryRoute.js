@@ -13,6 +13,8 @@ router.get("/detail/:itemId", utilities.handleErrors(invController.buildInventor
 router.get("/management", utilities.handleErrors(invController.buildManagement));
 router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON));
 router.get("/edit/:itemId", utilities.handleErrors(invController.buildInventoryItemForEdit));
+router.get("/delete/:itemId", utilities.handleErrors(invController.deleteInventoryItemView));
+router.post("/delete/:itemId", utilities.handleErrors(invController.deleteInventoryItemHandler));
 
 // Route to add classification 
 router.post("/classification", invValidate.addClassificationRules(), invValidate.checkClassificationData, utilities.handleErrors(invController.addNewClassification));

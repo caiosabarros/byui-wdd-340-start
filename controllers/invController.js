@@ -26,14 +26,14 @@ invCont.buildByClassificationId = async function (req, res, next) {
  * ************************** */
 invCont.buildInventoryItem = async function (req, res, next) {
   try {
-    const item_id = req.params.itemId
+    const item_id = parseInt(req.params.itemId)
     // the below returns the data.rows
     const item = await invModel.getInventoryItemDetail(item_id)
     // build page for itemId
-    const card = await utilities.buildItemDetailView(item[0])
+    const card = await utilities.buildItemDetailView(item)
     // maintain the same nav though we need to make another call to db
     let nav = await utilities.getNav()
-    const className = item[0].inv_make + " " + item[0].inv_model
+    const className = item.inv_make + " " + item.inv_model
     res.render("./inventory/item", {
       title: className + " vehicle",
       nav,
@@ -48,20 +48,20 @@ invCont.buildInventoryItem = async function (req, res, next) {
 
 invCont.addNewInventory = async function (req, res, next) {
   let nav = await utilities.getNav()
+  let select_classification = await utilities.buildClassificationList(req.body.classification_id)
   try {
     const { inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id } = req.body
     const data = await invModel.insertNewInventory(inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id)
     req.flash("success", 'Great! Inventory for ' + inv_make + ' ' + inv_model + ' created!')
-
     res.render("./inventory/management", {
       title: "Management",
       nav,
       errors: null,
+      classificationSelect: select_classification
     })
   } catch (error) {
 
     req.flash("notice", 'Sorry, there was an error processing the new inventory.')
-    let select_classification = await utilities.buildClassificationList(req.body.classification_id)
     res.status(500).render("./inventory/add-inventory", {
       title: "Add Classification",
       nav,
@@ -74,12 +74,81 @@ invCont.addNewInventory = async function (req, res, next) {
       inv_price,
       inv_miles,
       inv_color,
-      select_classification,
+      classificationSelect: select_classification,
       errors: null,
     })
   }
 }
 
+/* ***************************
+ *  Deliver Inventory Delete View
+ * ************************** */
+invCont.deleteInventoryItemView = async function (req, res, next) {
+  try {
+    const item_id = parseInt(req.params.itemId)
+
+    let nav = await utilities.getNav()
+
+    let itemData = await invModel.getInventoryItemDetail(item_id)
+
+    console.log("itemData", itemData)
+    const itemName = `${itemData.inv_make} ${itemData.inv_model}`
+
+    // let select_classification = await utilities.buildClassificationList(itemData.classification_id)
+    res.render("./inventory/delete-confirm", {
+      title: "Delete " + itemName,
+      nav,
+      // select_classification: select_classification,
+      errors: null,
+      inv_id: itemData.inv_id,
+      inv_make: itemData.inv_make,
+      inv_model: itemData.inv_model,
+      inv_year: itemData.inv_year,
+      inv_price: itemData.inv_price,
+      // classification_id: itemData.classification_id
+    })
+  } catch (error) {
+    console.error("Error ", error.message)
+    next(error)
+  }
+
+}
+
+/* ***************************
+ *  Inventory Item Delete
+ * ************************** */
+invCont.deleteInventoryItemHandler = async function (req, res, next) {
+  let nav = await utilities.getNav()
+  console.log("122", req.body)
+  console.log("123", req.params.itemId)
+  const { inv_id, inv_make, inv_model } = req.body
+  const updateResult = await invModel.deleteInventoryItem(
+    inv_id
+  )
+  const itemName = `${inv_make} ${inv_model}`
+
+  if (updateResult) {
+    req.flash("success", `The inventory item ${itemName} was successfully deleted.`)
+    res.redirect("/inv/management")
+  } else {
+    const { inv_make,
+      inv_model,
+      inv_year,
+      inv_price,
+    } = invModel.getInventoryItemDetail(inv_id)
+    req.flash("notice", "Sorry, the insert failed.")
+    res.status(501).render("inv/delete-confirm", {
+      title: "Edit " + itemName,
+      nav,
+      errors: null,
+      inv_id,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_price,
+    })
+  }
+}
 /* ***************************
  *  Update Inventory Data
  * ************************** */

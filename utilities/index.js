@@ -202,7 +202,7 @@ Util.checkJWTToken = (req, res, next) => {
   // outside if to handle case when user is logged out
 
   // req.path /inv/type/5 is an example...
-  let restricted = ["/inv/management", "/inv/edit", "/inv/add-classification", "/inv/add-inventory"]
+  let restricted = ["/inv/management", "/inv/edit", "/inv/delete", "/inv/add-classification", "/inv/add-inventory"]
   let isRestricted = restricted.some((route) => req.path.includes(route));
 
   if (req.cookies.jwt) {

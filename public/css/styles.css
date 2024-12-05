@@ -192,6 +192,14 @@ a {
   gap: 6px;
 }
 
+#deleteForm {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: 0 40% 0 40%;
+  gap: 6px;
+}
+
 #management-container {
   display: flex;
   flex-direction: column;
