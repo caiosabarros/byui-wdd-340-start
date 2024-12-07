@@ -22,13 +22,13 @@
                         <form id="updateAccountForm" action="/account/update" method="post">
                             <fieldset>
                                 <legend>Account Update</legend>
-                                <label for="account_firstname"><strong>First Name</strong></label>
+                                <label for="accountFirstnameUpdate"><strong>First Name</strong></label>
                                 <input type="text" name="account_firstname" id="accountFirstnameUpdate" required
                                     value="<%= locals.accountData.account_firstname %>">
-                                <label for="account_lastname"><strong>Last Name</strong></label>
+                                <label for="accountLastnameUpdate"><strong>Last Name</strong></label>
                                 <input type="text" name="account_lastname" id="accountLastnameUpdate" required
                                     value="<%= locals.accountData.account_lastname %>">
-                                <label for="account_email"><strong>Email</strong></label>
+                                <label for="accountEmailUpdate"><strong>Email</strong></label>
                                 <input type="email" name="account_email" id="accountEmailUpdate" required
                                     value="<%= locals.accountData.account_email %>">
                                 <input type="hidden" name="account_id" value="<%= locals.accountData.account_id %>" />
@@ -40,7 +40,7 @@
                             <form id="updatePasswordForm" action="/account/password" method="post">
                                 <fieldset>
                                     <legend>Change Password</legend>
-                                    <label for="account_password">Password</label>
+                                    <label for="accountPasswordUpdate">Password</label>
                                     <small id="invalidInputUpdate">By entering a password it will change the current
                                         password. There must be at least 12 characters, one must be a
                                         number,
@@ -50,7 +50,7 @@
                                         lowercase letter, one must be a capital letter, and one must be a
                                         non-alphanumeric
                                         character.</small>
-                                    <input required name="account_password"
+                                    <input required name="account_password" id="accountPasswordUpdate"
                                         pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
                                         type="password" minlength="12">
                                     <input type="hidden" name="account_id"

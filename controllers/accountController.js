@@ -134,7 +134,7 @@ accountController.passwordUpdateHandler = async function (req, res, next) {
 
     // make actual change
     try {
-        accountData = accountModel.updatePassword(account_id, account_password)
+        accountData = await accountModel.updatePassword(account_id, account_password)
         console.log("accou", accountData)
     } catch (error) {
         console.error('error ' + error)
