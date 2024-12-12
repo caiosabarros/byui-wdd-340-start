@@ -213,7 +213,7 @@ a {
   font-size: 20px;
   padding: 1%;
   border: none;
-  appearance: button;
+  appearance: none;
   outline: none;
 }
 
@@ -240,8 +240,32 @@ a {
   margin: 10px 0 10px 0;
 }
 
+.admin-accounts {
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  height: auto;
+}
+
+table.admin-accounts thead {
+  border-bottom: 1px solid black;
+}
+
+table.admin-accounts td {
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  padding: 0px;
+}
 
 @media (min-width: 900px) {
+
+  table.admin-accounts td {
+    padding: 10px;
+  }
 
   .notice {
     color: red;

@@ -13,7 +13,29 @@ async function registerAccount(account_firstname, account_lastname, account_emai
     }
 }
 
+async function deleteAccount(account_id) {
+    try {
+        const sql = "DELETE FROM account WHERE account_id = $1 RETURNING *"
+        const data = await pool.query(sql, [account_id])
+        return data.rows[0]
+    } catch (error) {
+        console.error(error.message)
+        return error.message
+    }
+}
 
+/* *****************************
+*   Get all accounts
+* *************************** */
+async function getAllAccounts() {
+    try {
+        const sql = "SELECT * FROM account ORDER BY account_firstname ASC;"
+        const data = await pool.query(sql)
+        return data.rows
+    } catch (err) {
+
+    }
+}
 
 /* **********************
  *   Check for existing email
@@ -89,4 +111,4 @@ async function getAccountById(account_id) {
     }
 }
 
-module.exports = { registerAccount, checkExistingEmail, updatePassword, getAccountByEmail, updateAccount, getAccountById };
+module.exports = { registerAccount, checkExistingEmail, updatePassword, getAccountByEmail, updateAccount, getAccountById, getAllAccounts, deleteAccount };

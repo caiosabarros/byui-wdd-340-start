@@ -202,8 +202,9 @@ Util.checkJWTToken = (req, res, next) => {
   // outside if to handle case when user is logged out
 
   // req.path /inv/type/5 is an example...
-  let restricted = ["/inv/management", "/inv/edit", "/inv/delete", "/inv/add-classification", "/inv/add-inventory"]
+  let restricted = ["/account/admin", "/inv/management", "/inv/edit", "/inv/delete", "/inv/add-classification", "/inv/add-inventory"]
   let isRestricted = restricted.some((route) => req.path.includes(route));
+  let isAdminOnlyRoute = req.path.includes(restricted[0]);
 
   if (req.cookies.jwt) {
     jwt.verify(
@@ -230,7 +231,7 @@ Util.checkJWTToken = (req, res, next) => {
         res.locals.accountData = accountData
 
 
-        if (isRestricted && accountData.account_type == 'Client') {
+        if ((isRestricted && accountData.account_type == 'Client') || (isAdminOnlyRoute && accountData.account_type == 'Admin')) {
 
           req.flash('notice', 'You do not have authorization to view this page, please log in.')
           // log user out as he's trying to mess up
