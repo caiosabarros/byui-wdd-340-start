@@ -231,7 +231,7 @@ Util.checkJWTToken = (req, res, next) => {
         res.locals.accountData = accountData
 
 
-        if ((isRestricted && accountData.account_type == 'Client') || (isAdminOnlyRoute && accountData.account_type == 'Admin')) {
+        if ((isRestricted && accountData.account_type == 'Client') || (isAdminOnlyRoute && accountData.account_type != 'Admin')) {
 
           req.flash('notice', 'You do not have authorization to view this page, please log in.')
           // log user out as he's trying to mess up
